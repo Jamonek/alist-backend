@@ -82,6 +82,33 @@ class User_model extends CI_Model {
         if(empty($email) || empty($password)) {
             return array('status' => false, 'msg' => 'Missing arguments');
         }
+        
+        // Check if email exists
+        $lowerCaseEmail = trim(strtolower($email));
+        $this->db->where('email', $lowerCaseEmail);
+        $query = $this->db->get('users');
+        
+        if($query->num_rows() < 1) {
+            // The email does not exist.. maybe a typo?
+            return array('status' => false, 'msg' => 'Email does not exist');
+        }
+        
+        // Everything checks out.. check if the email/password combo exist
+        $hashedPassword = hash('sha256', $password);
+        
+        $this->db->where('email', $lowerCaseEmail);
+        $this->db->where('password', $hashedPassword);
+        $query = $this->db->get('users');
+        
+        if($query->num_rows() == 1) {
+            // Success.. get the `rememberToken` and return the array
+            $result = $query->result_array();
+            $rememberToken = $result[0]['remember_token'];
+            return array('status' => true, 'msg' => 'Login success', 'remember_token' => $rememberToken);
+        } else {
+            // Combo does not exist
+            return array('status' => false, 'msg' => 'User not found');
+        }
     }
     
     private function generate($length = 10) {

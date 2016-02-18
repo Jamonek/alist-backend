@@ -19,5 +19,18 @@ class User_controller extends CI_Controller {
             break;    
         }
     }
+    
+    public function signin() {
+        $type = $this->input->post('type');
+        
+        switch($type) {
+            case "email":
+                // sign in logic
+            break;
+            default:
+                // default handling
+            break;
+        }
+    }
 }
 ?>

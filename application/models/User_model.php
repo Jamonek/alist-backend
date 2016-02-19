@@ -46,7 +46,7 @@ class User_model extends CI_Model {
         
         // Check if the email exists
         $lowerCaseEmail = trim(strtolower($email));
-        $this->db->where('email', $lowerCaseEmail);
+        $this->db->where('user_email', $lowerCaseEmail);
         $query = $this->db->get('users');
         
         if($query->num_rows() > 0) {
@@ -58,9 +58,9 @@ class User_model extends CI_Model {
         // But first.. generate our `rememberToken` for users
         $rememberToken = $this->generate(); // This token should be sent with all requests.. besides login/sign up
         $insertArray = array(
-            'email'             => $lowerCaseEmail,
-            'password'          => hash('sha256', $password),
-            'remember_token'    => $rememberToken
+            'user_email'             => $lowerCaseEmail,
+            'user_password'          => hash('sha256', $password),
+            'remember_token'         => $rememberToken
         );
         
         if($this->db->insert('users', $insertArray)) {
@@ -85,7 +85,7 @@ class User_model extends CI_Model {
         
         // Check if email exists
         $lowerCaseEmail = trim(strtolower($email));
-        $this->db->where('email', $lowerCaseEmail);
+        $this->db->where('user_email', $lowerCaseEmail);
         $query = $this->db->get('users');
         
         if($query->num_rows() < 1) {
@@ -96,8 +96,8 @@ class User_model extends CI_Model {
         // Everything checks out.. check if the email/password combo exist
         $hashedPassword = hash('sha256', $password);
         
-        $this->db->where('email', $lowerCaseEmail);
-        $this->db->where('password', $hashedPassword);
+        $this->db->where('user_email', $lowerCaseEmail);
+        $this->db->where('user_password', $hashedPassword);
         $query = $this->db->get('users');
         
         if($query->num_rows() == 1) {

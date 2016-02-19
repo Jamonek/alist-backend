@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'welcome';
 // User routes
-$route['user_controller/signup'] = 'user/signup';
+$route['usercontroller/signup'] = 'user/signup';
 $route['user_controller/signin'] = 'user/signin';
 // Event routes
 $route['404_override'] = '';
